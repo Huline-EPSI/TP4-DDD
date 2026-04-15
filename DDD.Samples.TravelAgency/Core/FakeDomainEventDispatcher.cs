@@ -12,8 +12,9 @@ public class FakeDomainEventDispatcher : DomainEventDispatcher
             .ToList()
             .ForEach(t =>
             {
-                var handler = (DomainEventListener<T>)Activator.CreateInstance(t);
-                handler.Handle(domainEvent);
+                var handler =Activator.CreateInstance(t);
+                var method = t.GetMethod("Handle");
+                method?.Invoke(handler, new object[] { domainEvent });
             });
             
     }
